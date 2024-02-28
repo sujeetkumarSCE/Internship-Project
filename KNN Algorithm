@@ -1,0 +1,121 @@
+import pandas as pd
+# C:\Users\HP\OneDrive\Desktop\sujeet\Dataset
+path ="C:\\Users\\HP\\OneDrive\\Desktop\\sujeet\\Dataset\\titanic-train.csv"
+data = pd.read_csv(path)
+
+import sklearn
+from sklearn.preprocessing import LabelEncoder
+l1=LabelEncoder()
+
+data['Sex']=l1.fit_transform(data['Sex'])
+data['Embarked']=l1.fit_transform(data['Embarked'])
+
+print(data)
+
+inputs=data.drop(['Survived','Ticket','PassengerId','Cabin'],'columns')
+output= data.drop(['Ticket','PassengerId','Pclass','Sex','Age','SibSp','Parch','Fare','Cabin','Embarked'],'columns')
+
+print(inputs)
+print(output)
+
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test = train_test_split(inputs,output,test_size=0.2)
+
+from sklearn.neighbors import KNeighborsClassifier
+model = KNeighborsClassifier(n_neighbors=13)
+model.fit(x_train,y_train)#training the model
+
+y_pred = model.predict(x_test)
+print(y_pred)
+print(y_test)
+
+from sklearn.metrics import confusion_matrix
+cm = confusion_matrix(y_test,y_pred)
+
+print(cm)
+
+res = model.predict([[3,1,0.42,0,1,8.5167,0]])
+print(res)
+model.score(x_test,y_test)
+
+     PassengerId  Survived  Pclass  Sex    Age  SibSp  Parch  Ticket     Fare  \
+0            804         1       3    1   0.42      0      1    2625   8.5167   
+1            756         1       2    1   0.67      1      1  250649  14.5000   
+2            470         1       3    0   0.75      2      1    2666  19.2583   
+3            645         1       3    0   0.75      2      1    2666  19.2583   
+4             79         1       2    1   0.83      0      2  248738  29.0000   
+..           ...       ...     ...  ...    ...    ...    ...     ...      ...   
+761          631         1       1    1  80.00      0      0   27042  30.0000   
+762          215         0       3    1  83.00      1      0  367229   7.7500   
+763           49         0       3    1  88.00      2      0    2662  21.6792   
+764          141         0       3    0  88.00      0      2    2678  15.2458   
+765          251         0       3    1  89.00      0      0  362316   7.2500   
+
+    Cabin  Embarked  
+0     NaN         0  
+1     NaN         2  
+2     NaN         0  
+3     NaN         0  
+4     NaN         2  
+..    ...       ...  
+761   A23         2  
+762   NaN         1  
+763   NaN         0  
+764   NaN         0  
+765   NaN         2  
+
+[766 rows x 11 columns]
+     Pclass  Sex    Age  SibSp  Parch     Fare  Embarked
+0         3    1   0.42      0      1   8.5167         0
+1         2    1   0.67      1      1  14.5000         2
+2         3    0   0.75      2      1  19.2583         0
+3         3    0   0.75      2      1  19.2583         0
+4         2    1   0.83      0      2  29.0000         2
+..      ...  ...    ...    ...    ...      ...       ...
+761       1    1  80.00      0      0  30.0000         2
+762       3    1  83.00      1      0   7.7500         1
+763       3    1  88.00      2      0  21.6792         0
+764       3    0  88.00      0      2  15.2458         0
+765       3    1  89.00      0      0   7.2500         2
+
+[766 rows x 7 columns]
+     Survived
+0           1
+1           1
+2           1
+3           1
+4           1
+..        ...
+761         1
+762         0
+763         0
+764         0
+765         0
+
+[766 rows x 1 columns]
+C:\Users\HP\AppData\Local\Temp\ipykernel_19356\373111992.py:15: FutureWarning: In a future version of pandas all arguments of DataFrame.drop except for the argument 'labels' will be keyword-only.
+  inputs=data.drop(['Survived','Ticket','PassengerId','Cabin'],'columns')
+C:\Users\HP\AppData\Local\Temp\ipykernel_19356\373111992.py:16: FutureWarning: In a future version of pandas all arguments of DataFrame.drop except for the argument 'labels' will be keyword-only.
+  output= data.drop(['Ticket','PassengerId','Pclass','Sex','Age','SibSp','Parch','Fare','Cabin','Embarked'],'columns')
+[1 1 0 0 0 0 1 1 0 0 1 0 0 0 0 0 1 0 0 1 1 1 0 0 1 0 0 0 0 0 0 0 0 1 0 0 0
+ 1 0 0 0 0 1 0 0 0 0 1 0 1 1 0 0 0 1 0 0 1 0 0 1 1 0 1 0 0 1 1 1 0 0 1 1 0
+ 0 0 0 1 0 0 0 1 0 0 1 0 1 0 0 1 0 0 1 1 0 0 0 0 0 0 1 0 0 0 1 1 0 1 0 0 0
+ 0 0 0 0 1 0 0 1 0 0 0 1 0 1 1 1 0 1 0 0 0 0 0 1 0 0 0 0 0 1 1 1 0 0 0 0 0
+ 0 1 1 0 1 1]
+     Survived
+520         1
+700         1
+148         0
+33          0
+664         0
+..        ...
+553         0
+676         0
+161         0
+505         0
+329         0
+
+[154 rows x 1 columns]
+[[74 30]
+ [28 22]]
+[1]
